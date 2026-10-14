@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Sales Dashboard</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#0f172a;color:white;padding:12px}
+.header{background:#1e293b;padding:18px;border-radius:12px;margin-bottom:12px}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
+.kpi{background:#1e293b;padding:14px;border-radius:12px;text-align:center}
+.kpi h3{font-size:10px;color:#94a3b8}
+.kpi h2{font-size:18px;color:#38bdf8;margin-top:6px}
+.card{background:#1e293b;padding:14px;border-radius:12px;margin-bottom:12px}
+@media(max-width:700px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="header">
+<h2>EXECUTIVE SALES DASHBOARD</h2>
+<p>Interactive Charts - Revenue Trend, Sales by Brand | Tech: HTML5, CSS3, Plotly.js | Fully Responsive</p>
+</div>
+<div class="kpi-row">
+<div class="kpi"><h3>TOTAL REVENUE</h3><h2>$645.22K</h2></div>
+<div class="kpi"><h3>TOTAL PROFIT</h3><h2>$296.38K</h2></div>
+<div class="kpi"><h3>GROSS MARGIN</h3><h2>45.94%</h2></div>
+<div class="kpi"><h3>TOTAL QTY</h3><h2>6,698</h2></div>
+<div class="kpi"><h3>TOTAL ORDERS</h3><h2>2,707</h2></div>
+</div>
+<div class="card"><div id="trend"></div></div>
+<div class="card"><div id="top"></div></div>
+<div class="card"><div id="donut"></div></div>
+<script>
+Plotly.newPlot('trend',[{x:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],y:[45,52,48,55,62,75,68,72,65,70,78,82],name:'Revenue',line:{color:'#38bdf8'},type:'scatter',mode:'lines+markers'},{x:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],y:[20,24,22,26,28,35,31,33,29,32,36,38],name:'Profit',line:{color:'#22c55e'},type:'scatter',mode:'lines+markers'}],{paper_bgcolor:'#1e293b',plot_bgcolor:'#1e293b',font:{color:'white'},title:'Month Wise Revenue and Profit',height:300,margin:{t:40}},{displayModeBar:false});
+Plotly.newPlot('top',[{x:[74,70,62,58,55],y:['UK','Germany','USA','France','Canada'],type:'bar',orientation:'h',marker:{color:'#38bdf8'}}],{paper_bgcolor:'#1e293b',plot_bgcolor:'#1e293b',font:{color:'white'},title:'Top 5 Country by Revenue',height:300},{displayModeBar:false});
+Plotly.newPlot('donut',[{values:[40.34,30.2,15.1,14.36],labels:['Online Store','Retail','Wholesale','Distributor'],type:'pie',hole:0.6}],{paper_bgcolor:'#1e293b',font:{color:'white'},title:'Sales Channel',height:300},{displayModeBar:false});
+</script>
+</body>
+</html>
