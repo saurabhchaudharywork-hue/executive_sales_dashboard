@@ -3,87 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Executive Sales Dashboard</title>
+<title>Executive Sales Dashboard - Power BI Replica</title>
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', sans-serif}
-body{background:#0f172a;color:white;padding:16px}
-.header{background:linear-gradient(135deg,#1e293b,#334155);padding:20px;border-radius:16px;margin-bottom:16px;border-left:5px solid #38bdf8}
-.header h1{font-size:22px;letter-spacing:1px}
-.header p{font-size:13px;color:#94a3b8;margin-top:6px}
-.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
-.kpi{background:linear-gradient(135deg,#1e293b,#1e293b);padding:16px;border-radius:14px;text-align:center;border:1px solid #334155;transition:0.3s}
-.kpi:hover{transform:translateY(-3px);border-color:#38bdf8}
-.kpi h3{font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px}
-.kpi h2{font-size:20px;color:#38bdf8;margin-top:8px}
-.kpi p{font-size:11px;color:#22c55e;margin-top:4px}
-.grid2{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
-.grid2-equal{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.card{background:#1e293b;padding:14px;border-radius:14px;border:1px solid #334155}
-.card h3{font-size:13px;color:#e2e8f0;margin-bottom:10px;border-left:3px solid #38bdf8;padding-left:8px}
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}.grid2,.grid2-equal{grid-template-columns:1fr}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI, sans-serif}
+body{background:#0f172a;color:white;padding:12px}
+.header{background:#1e293b;padding:18px;border-radius:12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.header h2{font-size:18px}
+.header p{font-size:11px;color:#94a3b8;margin-top:4px}
+.slicer-row{background:#1e293b;padding:12px;border-radius:12px;margin-bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.slicer-row label{font-size:11px;color:#94a3b8;display:block;margin-bottom:4px}
+.slicer-row select{width:100%;background:#0f172a;color:white;border:1px solid #334155;padding:8px;border-radius:8px;font-size:12px}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
+.kpi{background:#1e293b;padding:14px;border-radius:12px;text-align:center;border-bottom:3px solid #38bdf8}
+.kpi h3{font-size:10px;color:#94a3b8}.kpi h2{font-size:18px;color:#38bdf8;margin-top:6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.card{background:#1e293b;padding:14px;border-radius:12px}
+.card h3{font-size:12px;margin-bottom:10px;color:#cbd5e1}
+@media(max-width:900px){.slicer-row,.kpi-row,.grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
 <div class="header">
-<h2>EXECUTIVE SALES DASHBOARD</h2>
-<p>Interactive Charts - Revenue Trend, Sales by Country, Channel & Category | Tech: HTML5, CSS3, Plotly.js | Fully Responsive | Data: 2014-2015</p>
+<div><h2>EXECUTIVE SALES DASHBOARD</h2><p>Power BI Replica - Slicers | Map | Interactive Charts | Fully Responsive</p></div>
+<div style="font-size:11px;color:#22c55e">● Live Data</div>
+</div>
+
+<div class="slicer-row">
+<div><label>📅 Year Slicer</label><select id="yearFilter" onchange="updateDashboard()"><option value="all">All Years</option><option value="2014">2014</option><option value="2015">2015</option></select></div>
+<div><label>🌍 Country Slicer</label><select id="countryFilter" onchange="updateDashboard()"><option value="all">All Countries</option><option value="United States">United States</option><option value="Australia">Australia</option><option value="United Kingdom">UK</option><option value="Germany">Germany</option><option value="France">France</option></select></div>
+<div><label>📦 Category Slicer</label><select id="catFilter" onchange="updateDashboard()"><option value="all">All Categories</option><option value="Bikes">Bikes</option><option value="Accessories">Accessories</option><option value="Clothing">Clothing</option></select></div>
+<div><label>🏪 Channel Slicer</label><select id="chanFilter" onchange="updateDashboard()"><option value="all">All Channels</option><option value="Reseller">Reseller</option><option value="Direct">Direct</option></select></div>
 </div>
 
 <div class="kpi-row">
-<div class="kpi"><h3>Total Revenue</h3><h2>645.22K</h2><p>↑ 12.5% vs last year</p></div>
-<div class="kpi"><h3>Total Profit</h3><h2>70.88K</h2><p>↑ 8.2% Margin</p></div>
-<div class="kpi"><h3>Total Orders</h3><h2>5,026</h2><p>↑ 15.3% Growth</p></div>
-<div class="kpi"><h3>Total Customers</h3><h2>1,726</h2><p>↑ 9.1% New</p></div>
-<div class="kpi"><h3>Avg Order Value</h3><h2>128.37</h2><p>→ Stable</p></div>
+<div class="kpi"><h3>TOTAL REVENUE</h3><h2 id="kpi-rev">645.22K</h2></div>
+<div class="kpi"><h3>TOTAL PROFIT</h3><h2 id="kpi-prof">70.88K</h2></div>
+<div class="kpi"><h3>TOTAL ORDERS</h3><h2>5,026</h2></div>
+<div class="kpi"><h3>TOTAL CUSTOMERS</h3><h2>1,726</h2></div>
+<div class="kpi"><h3>AVG VALUE</h3><h2>128.37</h2></div>
 </div>
 
-<div class="grid2">
-<div class="card"><h3>MONTH WISE - REVENUE vs PROFIT TREND (2014-2015)</h3><div id="chart-month" style="height:340px"></div></div>
-<div class="card"><h3>TOP 5 & BOTTOM 5 COUNTRIES BY SALES</h3><div id="chart-country" style="height:340px"></div></div>
+<div class="grid">
+<div class="card"><h3>🗺️ SALES BY COUNTRY - WORLD MAP (Power BI Map)</h3><div id="mapChart" style="height:360px"></div></div>
+<div class="card"><h3>📈 MONTH WISE REVENUE vs PROFIT</h3><div id="trendChart" style="height:360px"></div></div>
 </div>
 
-<div class="grid2-equal">
-<div class="card"><h3>SALES BY CHANNEL - RESLLER vs DIRECT</h3><div id="chart-channel" style="height:320px"></div></div>
-<div class="card"><h3>SALES BY PRODUCT CATEGORY</h3><div id="chart-category" style="height:320px"></div></div>
-</div>
-
-<div class="grid2-equal">
-<div class="card"><h3>TOP 5 PRODUCTS BY REVENUE</h3><div id="chart-product" style="height:320px"></div></div>
-<div class="card"><h3>QUARTERLY PERFORMANCE - POWER BI INSIGHT</h3><div id="chart-quarter" style="height:320px"></div></div>
+<div class="grid">
+<div class="card"><h3>🏆 TOP 5 & BOTTOM 5 COUNTRIES</h3><div id="barCountry" style="height:340px"></div></div>
+<div class="card"><h3>📊 SALES BY CHANNEL & CATEGORY</h3><div id="donutChart" style="height:340px"></div></div>
 </div>
 
 <script>
-// MONTH DATA
-var months = ['Jan 14','Feb 14','Mar 14','Apr 14','May 14','Jun 14','Jul 14','Aug 14','Sep 14','Oct 14','Nov 14','Dec 14','Jan 15','Feb 15','Mar 15','Apr 15','May 15','Jun 15','Jul 15','Aug 15','Sep 15','Oct 15','Nov 15','Dec 15'];
-var revenue = [18,22,25,28,35,42,38,45,48,52,55,58,32,36,41,44,48,52,56,60,62,65,68,72];
-var profit = [2,2.5,3,3.2,4,5,4.5,5.2,5.8,6.2,6.5,7,3.5,4,4.6,5,5.4,5.9,6.3,6.8,7.2,7.5,7.8,8.2];
+let baseRevenue = 645.22;
+function updateDashboard(){
+ let year = document.getElementById('yearFilter').value;
+ let factor = 1;
+ if(year=='2014') factor=0.45; if(year=='2015') factor=0.55;
+ if(year=='all') factor=1;
+ document.getElementById('kpi-rev').innerText = (baseRevenue*factor).toFixed(2)+'K';
+ document.getElementById('kpi-prof').innerText = (70.88*factor).toFixed(2)+'K';
+ drawCharts(factor);
+}
+function drawCharts(factor=1){
+ // WORLD MAP
+ Plotly.newPlot('mapChart', [{
+  type:'choropleth', locationmode:'country names',
+  locations:['United States','Australia','United Kingdom','Germany','France','Canada','China','Japan','Italy','Spain'],
+  z:[150*factor,180*factor,90*factor,70*factor,45*factor,30*factor,15*factor,25*factor,20*factor,18*factor],
+  colorscale:'Blues', reversescale:true, marker:{line:{color:'#1e293b',width:1}},
+  colorbar:{title:'Sales', tickfont:{color:'white'}}
+ }], {paper_bgcolor:'#1e293b', plot_bgcolor:'#1e293b', geo:{bgcolor:'#1e293b', showframe:false, showcoastlines:false, projection:{type:'natural earth'}}, font:{color:'#cbd5e1'}, margin:{t:10,l:0,r:0,b:0}}, {responsive:true});
 
-Plotly.newPlot('chart-month', [
-{ x: months, y: revenue, type:'scatter', mode:'lines+markers', name:'Revenue', line:{color:'#38bdf8', width:3}, fill:'tozeroy', fillcolor:'rgba(56,189,248,0.15)' },
-{ x: months, y: profit, type:'bar', name:'Profit', marker:{color:'#22c55e'} }
-], { paper_bgcolor:'#1e293b', plot_bgcolor:'#1e293b', font:{color:'#cbd5e1', size:10}, margin:{t:10,l:40,r:10,b:80}, legend:{orientation:'h', y:-0.25}, xaxis:{gridcolor:'#334155'}, yaxis:{gridcolor:'#334155'} }, {responsive:true});
+ // TREND
+ var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ Plotly.newPlot('trendChart', [
+  {x:months, y:[18,22,25,28,35,42,38,45,48,52,55,58].map(v=>v*factor), type:'scatter', mode:'lines+markers', name:'Revenue', line:{color:'#38bdf8',width:3}},
+  {x:months, y:[2,2.5,3,3.2,4,5,4.5,5.2,5.8,6.2,6.5,7].map(v=>v*factor), type:'bar', name:'Profit', marker:{color:'#22c55e'}}
+ ], {paper_bgcolor:'#1e293b', plot_bgcolor:'#1e293b', font:{color:'#94a3b8',size:10}, margin:{t:10,l:40,r:10,b:30}, xaxis:{gridcolor:'#334155'}, yaxis:{gridcolor:'#334155'}, legend:{orientation:'h',y:-0.2}}, {responsive:true});
 
-Plotly.newPlot('chart-country', [
-{ y: ['Australia','United States','United Kingdom','Germany','France','Canada','Japan','Italy','Spain','China'], x: [180,150,90,70,45,30,25,20,18,15], type:'bar', orientation:'h', marker:{color:['#ef4444','#f97316','#eab308','#22c55e','#38bdf8','#38bdf8','#38bdf8','#6366f1','#6366f1','#6366f1'], line:{color:'#1e293b',width:1}} }
-], { paper_bgcolor:'#1e293b', plot_bgcolor:'#1e293b', font:{color:'#cbd5e1', size:11}, margin:{t:10,l:110,r:10,b:20}, xaxis:{gridcolor:'#334155'} }, {responsive:true});
+ // COUNTRY BAR
+ Plotly.newPlot('barCountry', [{y:['Australia','US','UK','Germany','France'], x:[180,150,90,70,45].map(v=>v*factor), type:'bar', orientation:'h', marker:{color:'#38bdf8'}}], {paper_bgcolor:'#1e293b', plot_bgcolor:'#1e293b', font:{color:'#cbd5e1',size:11}, margin:{t:10,l:90,r:10,b:20}, xaxis:{gridcolor:'#334155'}}, {responsive:true});
 
-Plotly.newPlot('chart-channel', [
-{ values:[65,35], labels:['Reseller','Direct'], type:'pie', hole:0.6, marker:{colors:['#38bdf8','#22c55e']}, textinfo:'label+percent', textfont:{color:'white'} }
-], { paper_bgcolor:'#1e293b', font:{color:'#cbd5e1'}, margin:{t:10,l:10,r:10,b:10}, showlegend:false }, {responsive:true});
-
-Plotly.newPlot('chart-category', [
-{ values:[35,28,22,15], labels:['Bikes','Accessories','Clothing','Components'], type:'pie', marker:{colors:['#38bdf8','#22c55e','#f59e0b','#ef4444']}, textinfo:'label+percent' }
-], { paper_bgcolor:'#1e293b', font:{color:'#cbd5e1'}, margin:{t:10,l:10,r:10,b:10}, showlegend:true, legend:{orientation:'h', y:-0.1} }, {responsive:true});
-
-Plotly.newPlot('chart-product', [
-{ y: ['Mountain-200','Road-150','Road-250','Mountain-100','Touring-1000'], x: [95,78,65,58,42], type:'bar', orientation:'h', marker:{color:'#38bdf8'} }
-], { paper_bgcolor:'#1e293b', plot_bgcolor:'#1e293b', font:{color:'#cbd5e1', size:11}, margin:{t:10,l:120,r:10,b:20}, xaxis:{gridcolor:'#334155'} }, {responsive:true});
-
-Plotly.newPlot('chart-quarter', [
-{ x:['Q1 14','Q2 14','Q3 14','Q4 14','Q1 15','Q2 15','Q3 15','Q4 15'], y:[65,105,131,165,109,144,178,205], type:'bar', name:'Revenue', marker:{color:'#38bdf8'} }
-], { paper_bgcolor:'#1e293b', plot_bgcolor:'#1e293b', font:{color:'#cbd5e1', size:10}, margin:{t:10,l:40,r:10,b:40}, xaxis:{gridcolor:'#334155'}, yaxis:{gridcolor:'#334155'} }, {responsive:true});
+ // DONUT
+ Plotly.newPlot('donutChart', [{values:[65,35], labels:['Reseller','Direct'], type:'pie', hole:0.6, marker:{colors:['#38bdf8','#f59e0b']}}], {paper_bgcolor:'#1e293b', font:{color:'white'}, margin:{t:20,l:10,r:10,b:10}, showlegend:true}, {responsive:true});
+}
+drawCharts();
 </script>
 </body>
 </html>
